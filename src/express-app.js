@@ -1,6 +1,7 @@
 
 const express = require('express');
 const cors  = require('cors');
+const HandleErrors = require('./utils/error-handler')
 
 
 module.exports = async (app) => {
@@ -10,5 +11,6 @@ module.exports = async (app) => {
     app.use(cors());
     app.use(express.static(__dirname + '/public'))
 
-
+    // error handling
+    app.use(HandleErrors);
 }
