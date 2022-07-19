@@ -2,6 +2,13 @@
 const express = require('express');
 const cors  = require('cors');
 const HandleErrors = require('./utils/error-handler')
+const ResponseHandler = require('./utils/reponse-handler')
+const bodyParser = require('body-parser')
+const multer = require('multer');
+
+
+
+const { customer } = require('./api');
 
 
 module.exports = async (app) => {
@@ -11,6 +18,24 @@ module.exports = async (app) => {
     app.use(cors());
     app.use(express.static(__dirname + '/public'))
 
+    //form data handler
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(express.static('public'));
+
+    //to fixed form data catch issue
+    app.use(multer().none());
+
+
+
+    //api
+    customer(app);
+
+
     // error handling
     app.use(HandleErrors);
+
+    //response handling
+    app.use(ResponseHandler);
+
 }
