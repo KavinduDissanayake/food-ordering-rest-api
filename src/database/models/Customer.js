@@ -9,7 +9,8 @@ const CustomerSchema = new Schema({
     },
     password: String,
     salt: String,
-    phone: String,
+    firstName: String,
+    lastName: String,
     address: [
         {type: Schema.Types.ObjectId, ref: 'address', require: true}
     ],
