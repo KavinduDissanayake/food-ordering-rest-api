@@ -1,6 +1,8 @@
 const express = require('express');
 const { databaseConnection } = require('./database');
-const mongoose = require("mongoose");
+const { PORT } = require('./config');
+
+const expressApp = require('./express-app');
 
 
 
@@ -11,9 +13,15 @@ const StartServer = async() => {
     await databaseConnection();
 
 
-    app.listen(3022, function() {
-        console.log("Server started on port 3000");
-    });
+    await expressApp(app);
+
+    app.listen(PORT, () => {
+        console.log(`listening to port ${PORT}`);
+    })
+        .on('error', (err) => {
+            console.log(err);
+            process.exit();
+        })
 }
 
 
