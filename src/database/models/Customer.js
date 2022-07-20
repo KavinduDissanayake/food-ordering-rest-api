@@ -11,10 +11,12 @@ const CustomerSchema = new Schema({
     salt: String,
     firstName: String,
     lastName: String,
+    avatarUrl: String,
     accessToken: String,
-    address: [
-        {type: Schema.Types.ObjectId, ref: 'address', require: true}
-    ],
+    address: String,
+    // address: [
+    //     {type: Schema.Types.ObjectId, ref: 'address', require: true}
+    // ],
     cart: [
         {
             product: {type: Schema.Types.ObjectId, ref: 'product', require: true},

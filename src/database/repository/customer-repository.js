@@ -12,9 +12,11 @@ class CustomerRepository {
                 salt,
                 firstName,
                 lastName,
-                address: [],
+                address: "",
+                avatarUrl:'https://ui-avatars.com/api/?name='+firstName+'%'+lastName,
             })
             const customerResult = await customer.save();
+
             return customerResult;
 
         }catch(err){
@@ -35,41 +37,55 @@ class CustomerRepository {
 
         try {
             const existingCustomer = await CustomerModel.findById(id);
-                // .populate('address')
-                // .populate('wishlist')
-                // .populate('orders')
-                // .populate('cart.product');
+            // .populate('address')
+            // .populate('wishlist')
+            // .populate('orders')
+            // .populate('cart.product');
             return existingCustomer;
         } catch (err) {
             throw new APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Find Customer');
         }
     }
 
-    async CreateAddress({ _id, street, postalCode, city, country}){
+    async EditProfile({id},{firstName,lastName ,address}){
 
         try{
-            const profile = await CustomerModel.findById(_id);
+            const profile = await CustomerModel.findById(id);
+
 
             if(profile){
-
-                const newAddress = new AddressModel({
-                    street,
-                    postalCode,
-                    city,
-                    country
-                })
-
-                await newAddress.save();
-
-                profile.address.push(newAddress);
+                profile.firstName =  firstName
+                profile.lastName =  lastName
+                profile.address =  address
             }
 
             return await profile.save();
 
         }catch(err){
-            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Error on Create Address')
+            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Error on Update Profile')
         }
     }
+
+
+
+
+    async UpdateAvtar({id},{imageUrl}){
+
+        try{
+            const profile = await CustomerModel.findById(id);
+
+
+            if(profile){
+                profile.avatarUrl =  imageUrl
+            }
+
+            return await profile.save();
+
+        }catch(err){
+            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Error on Profile Image')
+        }
+    }
+
 
 }
 

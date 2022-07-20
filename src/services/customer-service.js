@@ -1,9 +1,6 @@
 const {CustomerRepository} = require("../database");
 const {FormateData, GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword} = require('../utils');
 const {APIError, BadRequestError, STATUS_CODES} = require('../utils/app-errors')
-const {error} = require("winston");
-const ResponseHandler = require("../utils/reponse-handler");
-const res = require("express/lib/response");
 
 
 // All Business logic will be here
@@ -12,7 +9,6 @@ class CustomerService {
     constructor() {
         this.repository = new CustomerRepository();
     }
-
 
     async SignIn(userInputs){
 
@@ -47,7 +43,6 @@ class CustomerService {
         }
 
     }
-
 
     async SignUp(userInputs) {
 
@@ -84,20 +79,39 @@ class CustomerService {
         }
     }
 
-    async AddNewAddress(_id,userInputs){
 
-        const { street, postalCode, city,country} = userInputs;
+    async EditProfile(id,userInputs){
+        const { firstName,lastName ,address} = userInputs;
 
         try {
-            const addressResult = await this.repository.CreateAddress({ _id, street, postalCode, city,country})
-            return FormateData(addressResult);
+            const existingCustomer = await this.repository.EditProfile({id}, { firstName,lastName ,address})
+
+
+            return FormateData(existingCustomer);
 
         } catch (err) {
             throw err
         }
-
-
     }
+
+
+
+    async UpdateAvtar(id,userInputs){
+        const { imageUrl } = userInputs;
+
+        try {
+            const existingCustomer = await this.repository.UpdateAvtar({id}, { imageUrl})
+
+
+            return FormateData(existingCustomer);
+
+        } catch (err) {
+            throw err
+        }
+    }
+
+
+
 
 }
 

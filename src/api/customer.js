@@ -55,7 +55,21 @@ module.exports = (app) => {
     });
 
 
-    //----------------------------------------------Add Account---------------------------------------------------------------------
+    //----------------------------------------------Edit Profile---------------------------------------------------------------------
+    app.put('/customer/edit_profile', UserAuth ,async (req,res,next) => {
+
+        try {
+            const { _id } = req.user;
+            const { firstName, lastName,address } = req.body;
+
+            const { data } = await service.EditProfile({ _id },{ firstName, lastName,address });
+
+            ResponseHandler(res,200,"Successfully User Profile get !",data);
+        } catch (err) {
+            ResponseHandler(res,500,err.name,[])
+        }
+    });
+
     app.post('/customer/address', UserAuth, async (req,res,next) => {
 
         try {
