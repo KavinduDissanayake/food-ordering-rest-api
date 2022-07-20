@@ -30,12 +30,10 @@ module.exports = (app) => {
     app.post('/customer/login',  async (req,res,next) => {
 
         try {
-
             const { email, password } = req.body;
-
             const { data } = await service.SignIn({ email, password});
+            ResponseHandler(res,200,"Successfully User Login !",data.existingCustomer);
 
-            ResponseHandler(res,200,"Successfully User Login !",data);
         } catch (err) {
             ResponseHandler(res,err.statusCode,err.message,[])
         }

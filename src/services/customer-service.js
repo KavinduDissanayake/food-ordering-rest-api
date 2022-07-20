@@ -28,13 +28,19 @@ class CustomerService {
 
                 if(validPassword){
                     const token = await GenerateSignature({ email: existingCustomer.email, _id: existingCustomer._id});
-                    return FormateData({id: existingCustomer._id, token });
+
+                    existingCustomer["accessToken"] = token
+                    return FormateData({existingCustomer});
+
                 }else{
-                    throw new APIError('API Error', STATUS_CODES.UN_AUTHORISED_CREDENTIALS, 'Invalid Customer credentials !')
+                    throw new APIError('API Error', STATUS_CODES.UN_AUTHORISED_CREDENTIALS, 'Invalid Customer Password !')
                 }
+            }else {
+                throw new APIError('API Error', STATUS_CODES.UN_AUTHORISED_CREDENTIALS, 'Invalid Customer Email !')
+
             }
 
-            return FormateData(null);
+            // return FormateData(null);
 
         } catch (err) {
             throw err
