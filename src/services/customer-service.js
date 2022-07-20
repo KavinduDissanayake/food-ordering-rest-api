@@ -1,6 +1,6 @@
 const {CustomerRepository} = require("../database");
 const {FormateData, GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword} = require('../utils');
-const {APIError, BadRequestError} = require('../utils/app-errors')
+const {APIError, BadRequestError, STATUS_CODES} = require('../utils/app-errors')
 const {error} = require("winston");
 const ResponseHandler = require("../utils/reponse-handler");
 const res = require("express/lib/response");
@@ -29,13 +29,15 @@ class CustomerService {
                 if(validPassword){
                     const token = await GenerateSignature({ email: existingCustomer.email, _id: existingCustomer._id});
                     return FormateData({id: existingCustomer._id, token });
+                }else{
+                    throw new APIError('API Error', STATUS_CODES.UN_AUTHORISED_CREDENTIALS, 'Invalid Customer credentials !')
                 }
             }
 
             return FormateData(null);
 
         } catch (err) {
-            throw new APIError('Data Not found', err)
+            throw err
         }
 
     }
@@ -56,10 +58,11 @@ class CustomerService {
 
             const token = await GenerateSignature({ email: email, _id: existingCustomer._id});
 
-            return FormateData({user_id: existingCustomer._id,accessToken:token});
+            existingCustomer["accessToken"] = token
+            return FormateData( existingCustomer);
 
         }catch(err){
-            throw  APIError('Data Not found', err)
+            throw err
         }
 
     }
@@ -71,11 +74,24 @@ class CustomerService {
             return FormateData(existingCustomer);
 
         } catch (err) {
-            throw new APIError('Data Not found', err)
+            throw err
         }
     }
 
+    async AddNewAddress(_id,userInputs){
 
+        const { street, postalCode, city,country} = userInputs;
+
+        try {
+            const addressResult = await this.repository.CreateAddress({ _id, street, postalCode, city,country})
+            return FormateData(addressResult);
+
+        } catch (err) {
+            throw err
+        }
+
+
+    }
 
 }
 

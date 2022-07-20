@@ -1,4 +1,4 @@
-const { CustomerModel } = require('../models');
+const { CustomerModel,AddressModel } = require('../models');
 const { APIError, BadRequestError, STATUS_CODES } = require('../../utils/app-errors')
 
 //Dealing with database operations
@@ -16,8 +16,9 @@ class CustomerRepository {
             })
             const customerResult = await customer.save();
             return customerResult;
+
         }catch(err){
-            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Create Customer')
+            throw  new APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Create Customer')
         }
     }
 
@@ -26,7 +27,7 @@ class CustomerRepository {
             const existingCustomer = await CustomerModel.findOne({ email: email });
             return existingCustomer;
         }catch(err){
-            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Find Customer')
+            throw new APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Find Customer')
         }
     }
 
@@ -40,7 +41,33 @@ class CustomerRepository {
                 // .populate('cart.product');
             return existingCustomer;
         } catch (err) {
-            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Find Customer');
+            throw new APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Find Customer');
+        }
+    }
+
+    async CreateAddress({ _id, street, postalCode, city, country}){
+
+        try{
+            const profile = await CustomerModel.findById(_id);
+
+            if(profile){
+
+                const newAddress = new AddressModel({
+                    street,
+                    postalCode,
+                    city,
+                    country
+                })
+
+                await newAddress.save();
+
+                profile.address.push(newAddress);
+            }
+
+            return await profile.save();
+
+        }catch(err){
+            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Error on Create Address')
         }
     }
 

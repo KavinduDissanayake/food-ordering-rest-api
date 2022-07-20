@@ -19,7 +19,7 @@ module.exports = (app) => {
             ResponseHandler(res,200,"Successfully User Created !",data);
 
         } catch (err) {
-            ResponseHandler(res,500,err.message,[])
+            ResponseHandler(res,err.statusCode,err.message,[])
         }
 
     });
@@ -37,11 +37,10 @@ module.exports = (app) => {
 
             ResponseHandler(res,200,"Successfully User Login !",data);
         } catch (err) {
-            ResponseHandler(res,500,err.name,[])
+            ResponseHandler(res,err.statusCode,err.message,[])
         }
 
     });
-
 
     //-----------------------------------------------Get Profile ---------------------------------------------------------------------
 
@@ -55,6 +54,27 @@ module.exports = (app) => {
         } catch (err) {
             ResponseHandler(res,500,err.name,[])
         }
+    });
+
+
+    //----------------------------------------------Add Account---------------------------------------------------------------------
+    app.post('/customer/address', UserAuth, async (req,res,next) => {
+
+        try {
+
+            const { _id } = req.user;
+
+            const { street, postalCode, city,country } = req.body;
+
+            const { data } = await service.AddNewAddress( _id ,{ street, postalCode, city,country});
+
+            ResponseHandler(res,200,"Successfully User Profile get !",data);
+
+        } catch (err) {
+            ResponseHandler(res,500,err.name,[])
+        }
+
+
     });
 
 }

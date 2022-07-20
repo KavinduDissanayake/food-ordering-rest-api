@@ -11,6 +11,7 @@ const CustomerSchema = new Schema({
     salt: String,
     firstName: String,
     lastName: String,
+    accessToken: String,
     address: [
         {type: Schema.Types.ObjectId, ref: 'address', require: true}
     ],
