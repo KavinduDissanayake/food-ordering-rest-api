@@ -3,6 +3,8 @@ const express = require('express');
 const cors  = require('cors');
 const HandleErrors = require('./utils/error-handler')
 const ResponseHandler = require('./utils/reponse-handler')
+const ImageUploadHandler = require('./utils/imulter')
+
 const bodyParser = require('body-parser')
 const multer = require('multer');
 
@@ -17,6 +19,9 @@ module.exports = async (app) => {
     app.use(express.urlencoded({ extended: true, limit: '1mb'}));
     app.use(cors());
     app.use(express.static(__dirname + '/public'))
+
+    //for user profile upload
+    app.use('/profile', express.static('upload/images'));
 
     //form data handler
     app.use(bodyParser.json());
@@ -37,5 +42,9 @@ module.exports = async (app) => {
 
     //response handling
     app.use(ResponseHandler);
+
+    //Image upload
+    //app.use(ImageUploadHandler);
+
 
 }
