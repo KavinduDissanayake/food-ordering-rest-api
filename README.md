@@ -1,4 +1,4 @@
-# Shopping-rest-api
+# Food-Ordering-rest-api
 Response Model generate online for Flutter
 >https://app.quicktype.io/
 
