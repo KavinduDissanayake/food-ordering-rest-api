@@ -79,7 +79,6 @@ class CustomerService {
         }
     }
 
-
     async EditProfile(id,userInputs){
         const { firstName,lastName ,address} = userInputs;
 
@@ -93,8 +92,6 @@ class CustomerService {
             throw err
         }
     }
-
-
 
     async UpdateAvtar(id,userInputs){
         const { imageUrl } = userInputs;
@@ -111,7 +108,15 @@ class CustomerService {
     }
 
 
+    async GetWishList(customerId){
 
+        try {
+            const wishListItems = await this.repository.Wishlist(customerId);
+            return FormateData(wishListItems);
+        } catch (err) {
+            throw new APIError('Data Not found', err)
+        }
+    }
 
 }
 

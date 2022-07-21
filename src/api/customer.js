@@ -56,7 +56,7 @@ module.exports = (app) => {
     });
 
 
-    //----------------------------------------------Edit Profile---------------------------------------------------------------------
+ //----------------------------------------------Edit Profile---------------------------------------------------------------------
     app.put('/customer/edit_profile', UserAuth ,async (req,res,next) => {
 
         try {
@@ -72,5 +72,18 @@ module.exports = (app) => {
     });
 
 
+
+//----------------------------------------------Wishlist---------------------------------------------------------------------
+
+    app.get('/customer/wishlist', UserAuth, async (req,res,next) => {
+        try {
+            const { _id } = req.user;
+            const { data } = await service.GetWishList( _id);
+            ResponseHandler(res,200,"Successfully User wishlist !",data);
+
+        } catch (err) {
+            ResponseHandler(res,500,err.name,[])
+        }
+    });
 
 }

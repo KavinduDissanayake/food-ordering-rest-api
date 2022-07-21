@@ -66,9 +66,6 @@ class CustomerRepository {
         }
     }
 
-
-
-
     async UpdateAvtar({id},{imageUrl}){
 
         try{
@@ -86,6 +83,16 @@ class CustomerRepository {
         }
     }
 
+
+    async Wishlist(customerId){
+        try{
+            const profile = await CustomerModel.findById(customerId).populate('wishlist');
+
+            return profile.wishlist;
+        }catch(err){
+            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Get Wishlist ')
+        }
+    }
 
 }
 
