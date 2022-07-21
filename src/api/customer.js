@@ -11,8 +11,8 @@ module.exports = (app) => {
     app.post('/customer/signup', async (req,res,next) => {
 
         try {
-            // const { email, password, firstName,lastName } = { email:req.body.email,password: req.body.password,firstName: req.body.firstName,lastName: req.body.lastName};
-            const { email, password, firstName,lastName } = req.body;
+
+           const { email, password, firstName,lastName } = req.body;
 
 
             const { data } =  await service.SignUp({ email, password, firstName,lastName});
@@ -40,7 +40,8 @@ module.exports = (app) => {
 
     });
 
-    //-----------------------------------------------Get Profile ---------------------------------------------------------------------
+
+ //-----------------------------------------------Get Profile ---------------------------------------------------------------------
 
     app.get('/customer/profile', UserAuth ,async (req,res,next) => {
 
@@ -70,23 +71,6 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/customer/address', UserAuth, async (req,res,next) => {
 
-        try {
-
-            const { _id } = req.user;
-
-            const { street, postalCode, city,country } = req.body;
-
-            const { data } = await service.AddNewAddress( _id ,{ street, postalCode, city,country});
-
-            ResponseHandler(res,200,"Successfully User Profile get !",data);
-
-        } catch (err) {
-            ResponseHandler(res,500,err.name,[])
-        }
-
-
-    });
 
 }
