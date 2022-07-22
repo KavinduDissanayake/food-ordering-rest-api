@@ -4,14 +4,10 @@ const { PORT } = require('./config');
 
 const expressApp = require('./express-app');
 
-
-
-
 const StartServer = async() => {
     const app = express();
 
     await databaseConnection();
-
 
     await expressApp(app);
 
