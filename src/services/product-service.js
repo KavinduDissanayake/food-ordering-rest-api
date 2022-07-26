@@ -18,6 +18,19 @@ class ProductService {
         }
     }
 
+    async GetProducts() {
+        try {
+            const products = await this.repository.Products();
+
+            return FormateData({
+                products,
+            })
+
+        }catch(err){
+            throw new APIError('Data Not found')
+        }
+    }
+
 }
 
 module.exports = ProductService;

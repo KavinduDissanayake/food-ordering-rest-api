@@ -22,4 +22,16 @@ module.exports = (app) => {
 
     });
 
+
+    app.get('/', async (req,res,next) => {
+        //check validation
+        try {
+            const { data} = await service.GetProducts();
+            ResponseHandler(res, 200, "Successfully create product!", data)
+        } catch (error) {
+            ResponseHandler(res, err.statusCode, err.message, [])
+        }
+
+    });
+
 }

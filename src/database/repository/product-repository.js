@@ -28,6 +28,15 @@ class ProductRepository {
 
     }
 
+
+    async Products(){
+        try{
+            return await ProductModel.find();
+        }catch(err){
+            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Get Products')
+        }
+    }
+
 }
 
 module.exports = ProductRepository;
