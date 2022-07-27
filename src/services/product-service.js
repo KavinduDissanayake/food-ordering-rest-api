@@ -9,6 +9,7 @@ class ProductService {
         this.repository = new ProductRepository();
     }
 
+    
     async CreateProduct(productInputs){
         try {
             const productResult = await this.repository.CreateProduct(productInputs)
@@ -17,6 +18,7 @@ class ProductService {
             throw new APIError('Data Not found')
         }
     }
+
 
     async GetProducts() {
         try {
@@ -29,6 +31,27 @@ class ProductService {
         }catch(err){
             throw new APIError('Data Not found')
         }
+    }
+
+
+    async GetProductById(productId){
+        try {
+            const product = await this.repository.FindById(productId);
+            return FormateData(product)
+        } catch (err) {
+            throw new APIError('Data Not found')
+        }
+    }
+
+
+    async GetProductsByCategory(category){
+        try {
+            const products = await this.repository.FindByCategory(category);
+            return FormateData(products)
+        } catch (err) {
+            throw new APIError('Data Not found')
+        }
+
     }
 
 }

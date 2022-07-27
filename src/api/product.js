@@ -34,4 +34,34 @@ module.exports = (app) => {
 
     });
 
+
+    app.get('/:id', async(req,res,next) => {
+
+        const productId = req.params.id;
+
+        try {
+            const { data } = await service.GetProductById(productId);
+            return res.status(200).json(data);
+
+        } catch (err) {
+            next(err)
+        }
+
+    });
+
+
+    app.get('/category/:type', async(req,res,next) => {
+
+        const type = req.params.type;
+
+        try {
+            const { data } = await service.GetProductsByCategory(type)
+            return res.status(200).json(data);
+
+        } catch (err) {
+            next(err)
+        }
+
+    });
+
 }
