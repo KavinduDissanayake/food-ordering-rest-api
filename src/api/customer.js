@@ -74,7 +74,6 @@ module.exports = (app) => {
 
 
 //----------------------------------------------Wishlist---------------------------------------------------------------------
-
     app.get('/customer/wishlist', UserAuth, async (req,res,next) => {
         try {
             const { _id } = req.user;
