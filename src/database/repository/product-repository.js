@@ -59,6 +59,17 @@ class ProductRepository {
         }
     }
 
+    
+    async FindSelectedProducts(selectedIds){
+        try{
+            const products = await ProductModel.find().where('_id').in(selectedIds.map(_id => _id)).exec();
+            return products;
+        }catch(err){
+            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Find Product')
+        }
+
+    }
+
 }
 
 module.exports = ProductRepository;

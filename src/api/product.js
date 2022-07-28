@@ -41,10 +41,10 @@ module.exports = (app) => {
 
         try {
             const { data } = await service.GetProductById(productId);
-            return res.status(200).json(data);
+            ResponseHandler(res, 200, "Successfully create product!", data)
 
         } catch (err) {
-            next(err)
+            ResponseHandler(res, err.statusCode, err.message, [])
         }
 
     });
@@ -56,12 +56,24 @@ module.exports = (app) => {
 
         try {
             const { data } = await service.GetProductsByCategory(type)
-            return res.status(200).json(data);
-
+            ResponseHandler(res, 200, "Successfully create product!", data)
         } catch (err) {
-            next(err)
+            ResponseHandler(res, err.statusCode, err.message, [])
         }
 
     });
+
+
+    app.post('/ids', async(req,res,next) => {
+
+        try {
+            const { ids } = req.body;
+            const products = await service.GetSelectedProducts(ids);
+            return res.status(200).json(products);
+        } catch (err) {
+            ResponseHandler(res, err.statusCode, err.message, [])
+        }
+
+    });;
 
 }
