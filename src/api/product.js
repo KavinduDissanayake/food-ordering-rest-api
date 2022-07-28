@@ -1,6 +1,7 @@
 const ProductService = require('../services/product-service');
 const CustomerService = require('../services/customer-service');
 const ResponseHandler = require("../utils/reponse-handler");
+const UserAuth = require('./middlewares/auth')
 
 module.exports = (app) => {
 
@@ -74,6 +75,20 @@ module.exports = (app) => {
             ResponseHandler(res, err.statusCode, err.message, [])
         }
 
-    });;
+    });
+
+        
+    app.put('/wishlist',UserAuth, async (req,res,next) => {
+
+        const { _id } = req.user;
+        
+        try {
+            const product = await service.GetProductById(req.body._id);
+            const wishList = await customerService.AddToWishlist(_id, product)
+            return res.status(200).json(wishList);
+        } catch (err) {
+            
+        }
+    });
 
 }

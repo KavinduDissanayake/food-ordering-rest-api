@@ -118,6 +118,17 @@ class CustomerService {
         }
     }
 
+    
+    async AddToWishlist(customerId, product){
+        try {
+            const wishlistResult = await this.repository.AddWishlistItem(customerId, product);        
+           return FormateData(wishlistResult);
+    
+        } catch (err) {
+            throw new APIError('Data Not found', err)
+        }
+    }
+    
 }
 
 module.exports = CustomerService;
