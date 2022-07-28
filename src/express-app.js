@@ -9,6 +9,7 @@ const multer = require('multer');
 
 
 const { customer } = require('./api');
+const { product } = require('./api');
 
 
 module.exports = async (app) => {
@@ -30,6 +31,7 @@ module.exports = async (app) => {
 
     //api
     customer(app);
+    product(app)
 
 
     // error handling
