@@ -128,6 +128,17 @@ class CustomerService {
             throw new APIError('Data Not found', err)
         }
     }
+
+
+    async RemoveFromWishlist(customerId, product){
+        try {
+            const wishlistResult = await this.repository.RemoveWishlistItem(customerId, product);        
+           return FormateData(wishlistResult);
+    
+        } catch (err) {
+            throw new APIError('Data Not found', err)
+        }
+    }
     
 }
 

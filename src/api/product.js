@@ -91,4 +91,19 @@ module.exports = (app) => {
         }
     });
 
+
+    app.delete('/wishlist/:id',UserAuth, async (req,res,next) => {
+
+        const { _id } = req.user;
+        const productId = req.params.id;
+
+        try {
+            const product = await service.GetProductById(productId);
+            const wishlist = await customerService.RemoveFromWishlist(_id, product)
+            return res.status(200).json(wishlist);
+        } catch (err) {
+            next(err)
+        }
+    });
+
 }
