@@ -133,4 +133,19 @@ module.exports = (app) => {
         }
     });
 
+    
+    //DELETE PRODUCTS FROM CART
+    app.delete('/cart/:id',UserAuth, async (req,res,next) => {
+
+        const { _id } = req.user;
+
+        try {
+            const product = await service.GetProductById(req.params.id);
+            const result = await customerService.ManageCart(_id, product, 0 , true);             
+            return res.status(200).json(result);
+        } catch (err) {
+            next(err)
+        }
+    });
+
 }
