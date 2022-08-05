@@ -65,7 +65,7 @@ module.exports = (app) => {
 
             const { data } = await service.EditProfile({ _id },{ firstName, lastName,address });
 
-            ResponseHandler(res,200,"Successfully User Profile get !",data);
+            ResponseHandler(res,200,"Successfully User Profile Edit !",data);
         } catch (err) {
             ResponseHandler(res,500,err.name,[])
         }

@@ -14,6 +14,8 @@ module.exports = (app) => {
 
         try {
             const { name, desc, banner, type, unit, price, available, suplier } = req.body;
+
+
             const { data } =  await service.CreateProduct({ name, desc, banner, type, unit, price, available, suplier });
             ResponseHandler(res, 200, "Successfully Created product!", data);
 
@@ -29,7 +31,7 @@ module.exports = (app) => {
         
         try {
             const { data} = await service.GetProducts();
-            ResponseHandler(res, 200, "Getting All Products Successfull!", data);
+            ResponseHandler(res, 200, "Getting All Products Successfully !", data);
 
         } catch (error) {
             ResponseHandler(res, err.statusCode, err.message, []);
@@ -45,7 +47,7 @@ module.exports = (app) => {
 
         try {
             const { data } = await service.GetProductById(productId);
-            ResponseHandler(res, 200, `Getting Product With ID ${productId} Successfull!`, data);
+            ResponseHandler(res, 200, `Getting Product With ID ${productId} Successfully!`, data);
 
 
         } catch (err) {
@@ -61,7 +63,7 @@ module.exports = (app) => {
         try {
             const { ids } = req.body;
             const products = await service.GetSelectedProducts(ids);
-            ResponseHandler(res, 200, `Getting All Products With IDs ${ids} Successfull!`, data);
+            ResponseHandler(res, 200, `Getting All Products With IDs ${ids} Successfully!`, data);
 
         } catch (err) {
             ResponseHandler(res, err.statusCode, err.message, []);
@@ -77,7 +79,7 @@ module.exports = (app) => {
 
         try {
             const { data } = await service.GetProductsByCategory(type);
-            ResponseHandler(res, 200, `Getting All Products for Category ${type} Successfull!`, data);
+            ResponseHandler(res, 200, `Getting All Products for Category ${type} Successfully!`, data);
 
         } catch (err) {
             ResponseHandler(res, err.statusCode, err.message, []);
@@ -94,9 +96,13 @@ module.exports = (app) => {
         try {
             const product = await service.GetProductById(req.body._id);
             const wishList = await customerService.AddToWishlist(_id, product)
-            return res.status(200).json(wishList);
+            // return res.status(200).json(wishList);
+
+            ResponseHandler(res, 200, `Getting All   wishlist Successfully!`, wishList.data);
+
+
         } catch (err) {
-            
+            ResponseHandler(res, err.statusCode, err.message, []);
         }
     });
 

@@ -124,8 +124,10 @@ class CustomerRepository {
                 profile.wishlist = wishlist;
             }
     
-            const profileResult = await profile.save();      
-    
+            const profileResult = await profile.save();
+            console.log(profileResult);
+
+
             return profileResult.wishlist;
 
         }catch(err){

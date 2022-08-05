@@ -3,7 +3,6 @@ const express = require('express');
 const cors  = require('cors');
 const HandleErrors = require('./utils/error-handler')
 const ResponseHandler = require('./utils/reponse-handler')
-const ImageUploadHandler = require('./utils/imulter')
 
 const bodyParser = require('body-parser')
 const multer = require('multer');
