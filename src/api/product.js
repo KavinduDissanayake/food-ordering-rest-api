@@ -86,7 +86,7 @@ module.exports = (app) => {
     });
 
 
-        
+    //ADD PRODUCTS TO WISHLIST   
     app.put('/wishlist',UserAuth, async (req,res,next) => {
 
         const { _id } = req.user;
@@ -100,7 +100,7 @@ module.exports = (app) => {
         }
     });
 
-
+    //DELETE PRODUCTS FROM WISHLIST
     app.delete('/wishlist/:id',UserAuth, async (req,res,next) => {
 
         const { _id } = req.user;
@@ -115,5 +115,37 @@ module.exports = (app) => {
         }
     });
 
+    
+    //ADD PRODUCTS TO CART
+    app.put('/cart',UserAuth, async (req,res,next) => {
+        
+        const { _id, qty } = req.body;
+        
+        try {     
+            const product = await service.GetProductById(_id);
+    
+            const result =  await customerService.ManageCart(req.user._id, product, qty, false);
+    
+            return res.status(200).json(result);
+            
+        } catch (err) {
+            next(err)
+        }
+    });
+
+    
+    //DELETE PRODUCTS FROM CART
+    app.delete('/cart/:id',UserAuth, async (req,res,next) => {
+
+        const { _id } = req.user;
+
+        try {
+            const product = await service.GetProductById(req.params.id);
+            const result = await customerService.ManageCart(_id, product, 0 , true);             
+            return res.status(200).json(result);
+        } catch (err) {
+            next(err)
+        }
+    });
 
 }

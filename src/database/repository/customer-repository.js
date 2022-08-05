@@ -174,6 +174,58 @@ class CustomerRepository {
         }
 
     }
+
+      
+    async AddCartItem(customerId, product, qty, isRemove){
+
+        try{
+
+            const profile = await CustomerModel.findById(customerId).populate('cart.product');
+    
+            if(profile){ 
+     
+                const cartItem = {
+                    product,
+                    unit: qty,
+                };
+              
+                let cartItems = profile.cart;
+                
+                if(cartItems.length > 0){
+                    let isExist = false;
+                     cartItems.map(item => {
+                        if(item.product._id.toString() === product._id.toString()){
+                            if(isRemove){
+                                cartItems.splice(cartItems.indexOf(item), 1);
+                            }else{
+                                item.unit = qty;
+                            }
+                            isExist = true;
+                        }
+                    });
+    
+                    if(!isExist){
+                        cartItems.push(cartItem);
+                    } 
+                }else{
+                    cartItems.push(cartItem);
+                }
+    
+                profile.cart = cartItems;
+    
+                const cartSaveResult = await profile.save();
+
+                return cartSaveResult.cart;
+            }
+            
+            throw new Error('Unable to add to cart!');
+
+        }catch(err){
+            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Create Customer')
+        }
+    }
+
+
 }
 
 module.exports = CustomerRepository;
