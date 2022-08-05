@@ -108,6 +108,22 @@ class CustomerService {
     }
 
 
+    async GetShopingDetails(id){
+
+        try {
+            const existingCustomer = await this.repository.FindCustomerById({id});
+    
+            if(existingCustomer){
+               return FormateData(existingCustomer);
+            }       
+            return FormateData({ msg: 'Error'});
+            
+        } catch (err) {
+            throw new APIError('Data Not found', err)
+        }
+    }
+
+
     async GetWishList(customerId){
 
         try {
