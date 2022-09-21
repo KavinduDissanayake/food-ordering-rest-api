@@ -120,6 +120,7 @@ module.exports = (app) => {
 
         } catch (err) {
 
+            
             ResponseHandler(res,err.statusCode,err.message,[])
         }
     });

@@ -117,6 +117,8 @@ class CustomerRepository {
     
                  let wishlist = profile.wishlist;
       
+               
+        
                 if(wishlist.length > 0){
                     let isExist = false;
                     wishlist.map(item => {
