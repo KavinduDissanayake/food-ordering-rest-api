@@ -1,8 +1,4 @@
 .DS_Store
-
-# Dependency directories
-node_modules/
-
-# Optional npm cache directory
-.npm
-
+**/.env
+**/.DS_Store
+**/node_modules
