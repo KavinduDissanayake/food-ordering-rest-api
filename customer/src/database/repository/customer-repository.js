@@ -86,10 +86,12 @@ class CustomerRepository {
 
     async Wishlist(customerId){
         try{
-            const profile = await CustomerModel.findById(customerId).populate('wishlist');
+            const profile = await CustomerModel.findById(customerId)
+            .populate('wishlist');
 
             return profile.wishlist;
         }catch(err){
+            console.log(err.message)
             throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Get Wishlist ')
         }
     }
@@ -102,8 +104,14 @@ class CustomerRepository {
             _id, name, desc, price, available, banner 
         };
         
+
         try{
-            const profile = await CustomerModel.findById(customerId).populate('wishlist');
+            const profile = await CustomerModel.findById(customerId);
+                                                //.populate('wishlist');
+        
+            console.log(profile);
+
+
         
             if(profile){
     
@@ -135,6 +143,7 @@ class CustomerRepository {
             return profileResult.wishlist;
 
         }catch(err){
+            console.log(err.message)
             throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Add to WishList')
         }
 
