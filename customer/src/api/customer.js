@@ -1,93 +1,76 @@
 const CustomerService = require('../services/customer-service');
-const  UserAuth = require('./middlewares/auth');
+const UserAuth = require('./middlewares/auth');
 const ResponseHandler = require("../utils/reponse-handler");
 
 module.exports = (app) => {
-    
+
     const service = new CustomerService();
 
-    app.post('/signup', async (req,res,next) => {
-        try {
 
-            const { email, password, firstName,lastName } = req.body;;
-             const { data } =  await service.SignUp({ email, password, firstName,lastName});
-             ResponseHandler(res,200,"Successfully User Created !",data);
- 
-         } catch (err) {
-             ResponseHandler(res,err.statusCode,err.message,[])
-         }
-
-    });
-
-    app.post('/login',  async (req,res,next) => {
-
+    //-----------------------------------------------login---------------------------------------------------------------------
+    app.post('/login', async (req, res, next) => {
 
         try {
             const { email, password } = req.body;
-            const { data } = await service.SignIn({ email, password});
-            ResponseHandler(res,200,"Successfully User Login !",data.existingCustomer);
-
+            const { data } = await service.SignIn({ email, password });
+            ResponseHandler(res, 200, "Successfully User Login !", data.existingCustomer);
         } catch (err) {
-           ResponseHandler(res,err.statusCode,err.message,[])
-          //console.log(err.statusCode);
+            ResponseHandler(res, err.statusCode, err.message, [])
         }
 
     });
 
-    app.post('/address', UserAuth, async (req,res,next) => {
-        
+    //-----------------------------------------------signup---------------------------------------------------------------------
+    app.post('/signup', async (req, res, next) => {
+
         try {
-            
-            const { _id } = req.user;
-    
-            const { street, postalCode, city,country } = req.body;
-    
-            const { data } = await service.AddNewAddress( _id ,{ street, postalCode, city,country});
-    
-            return res.json(data);
 
+            const { email, password, firstName, lastName } = req.body;
+            const { data } = await service.SignUp({ email, password, firstName, lastName });
+            ResponseHandler(res, 200, "Successfully User Created !", data);
         } catch (err) {
-            next(err)
+            ResponseHandler(res, err.statusCode, err.message, [])
         }
 
-
     });
-     
 
-    app.get('/profile', UserAuth ,async (req,res,next) => {
+    //-----------------------------------------------Get Profile ---------------------------------------------------------------------
+    app.get('/profile', UserAuth, async (req, res, next) => {
 
         try {
             const { _id } = req.user;
             const { data } = await service.GetProfile({ _id });
-            return res.json(data);
-            
-        } catch (err) {
-            next(err)
-        }
-    });
-     
 
-    app.get('/shoping-details', UserAuth, async (req,res,next) => {
-        
-        try {
-            const { _id } = req.user;
-           const { data } = await service.GetShopingDetails(_id);
-    
-           return res.json(data);
-            
+            ResponseHandler(res, 200, "Successfully User Profile get !", data);
         } catch (err) {
-            next(err)
+            ResponseHandler(res, 500, err.name, [])
         }
     });
-    
-    app.get('/wishlist', UserAuth, async (req,res,next) => {
+
+
+    //----------------------------------------------Edit Profile---------------------------------------------------------------------
+    app.put('/edit_profile', UserAuth, async (req, res, next) => {
+
         try {
             const { _id } = req.user;
-            const { data } = await service.GetWishList( _id);
-            return res.status(200).json(data);
-            
+            const { firstName, lastName, address } = req.body;
+            const { data } = await service.EditProfile({ _id }, { firstName, lastName, address });
+            ResponseHandler(res, 200, "Successfully User Profile get !", data);
         } catch (err) {
-            next(err)
+            ResponseHandler(res, 500, err.name, [])
+        }
+    });
+
+
+
+    //----------------------------------------------Wishlist---------------------------------------------------------------------
+    app.get('/wishlist', UserAuth, async (req, res, next) => {
+        try {
+            const { _id } = req.user;
+            const { data } = await service.GetWishList(_id);
+            ResponseHandler(res, 200, "Successfully User wishlist !", data);
+        } catch (err) {
+            ResponseHandler(res, 500, err.name, [])
         }
     });
 }
