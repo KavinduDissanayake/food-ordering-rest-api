@@ -52,6 +52,7 @@ module.exports.PublishCustomerEvent = async(payload) => {
         })
 }
 
+
 module.exports.PublishShoppingEvent = async(payload) => {
         await axios.post('http://localhost:8000/shopping/app-events', {
             payload

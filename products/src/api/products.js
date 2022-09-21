@@ -7,21 +7,20 @@ module.exports = (app) => {
     
     const service = new ProductService();
 
-    app.post('/product/create', async(req,res,next) => {
+    app.post('/create', async(req,res,next) => {
         
         try {
             const { name, desc, type, unit,price, available, suplier, banner } = req.body; 
             // validation
             const { data } =  await service.CreateProduct({ name, desc, type, unit,price, available, suplier, banner });
-            return res.json(data);
-            
+            ResponseHandler(res, 200, "Successfully create product!", data)            
         } catch (err) {
-            next(err)    
+            ResponseHandler(res, err.statusCode, err.message, [])
         }
         
     });
 
-    app.get('/category/:type', async(req,res,next) => {
+    app.get('/:type', async(req,res,next) => {
         
         const type = req.params.type;
         
@@ -69,10 +68,12 @@ module.exports = (app) => {
         // get payload // to send to customer service 
         try {
             
+
             const { data } = await  service.GetProductPayload(_id, { productId: req.body._id},'ADD_TO_WISHLIST') 
 
-            PublishCustomerEvent(data);
+            await PublishCustomerEvent(data);
            
+
             return res.status(200).json(data.data.product);
         } catch (err) {
             
@@ -113,9 +114,10 @@ module.exports = (app) => {
                 product: data.data.product,
                 unit: data.data.qty 
             }
-    
-            return res.status(200).json(response);
-            
+        
+           // return res.status(200).json(response);
+            ResponseHandler(res, 200, "Successfully User Add Product To Cart !", response);
+
         } catch (err) {
 
             ResponseHandler(res,err.statusCode,err.message,[])
@@ -151,9 +153,9 @@ module.exports = (app) => {
         //check validation
         try {
             const { data} = await service.GetProducts();        
-            return res.status(200).json(data);
+            ResponseHandler(res, 200, "Successfully product Gets !", data)            
         } catch (error) {
-            next(err)
+            ResponseHandler(res, err.statusCode, err.message, [])
         }
         
     });

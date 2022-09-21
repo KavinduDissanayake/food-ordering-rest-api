@@ -9,7 +9,8 @@ module.exports = (app) => {
 
     //-----------------------------------------------login---------------------------------------------------------------------
     app.post('/login', async (req, res, next) => {
-
+   
+      //  console.log("Testing");
         try {
             const { email, password } = req.body;
             const { data } = await service.SignIn({ email, password });
@@ -17,6 +18,7 @@ module.exports = (app) => {
         } catch (err) {
             ResponseHandler(res, err.statusCode, err.message, [])
         }
+
 
     });
 
@@ -31,6 +33,8 @@ module.exports = (app) => {
         } catch (err) {
             ResponseHandler(res, err.statusCode, err.message, [])
         }
+
+
 
     });
 
@@ -60,7 +64,6 @@ module.exports = (app) => {
             ResponseHandler(res, 500, err.name, [])
         }
     });
-
 
 
     //----------------------------------------------Wishlist---------------------------------------------------------------------

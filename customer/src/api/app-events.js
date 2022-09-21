@@ -6,7 +6,8 @@ module.exports = (app) => {
 
     app.use('/app-events', async (req,res,next) => {
 
-        const { payload } = req.body.payload;
+        const { payload } = req.body;
+
 
         await service.SubscribeEvents(payload);
 
