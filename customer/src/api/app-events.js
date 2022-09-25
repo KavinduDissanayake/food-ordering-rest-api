@@ -10,7 +10,7 @@ module.exports = (app) => {
 
 
         await service.SubscribeEvents(payload);
-
+        
         
         console.log("===============  Customer Service Received Event ====== ");
         return res.status(200).json(payload);

@@ -61,6 +61,12 @@ module.exports = (app) => {
        
     });
      
+
+
+
+
+
+//add or repmve
     app.put('/wishlist',UserAuth, async (req,res,next) => {
 
         const { _id } = req.user;
@@ -73,10 +79,12 @@ module.exports = (app) => {
 
             await PublishCustomerEvent(data);
            
+            ResponseHandler(res, 200, "Successfully product add or remove to watchlist", data.data.product)            
 
-            return res.status(200).json(data.data.product);
+            // return res.status(200).json(data.data.product);
         } catch (err) {
-            
+            ResponseHandler(res, err.statusCode, err.message, [])
+
         }
     });
     
@@ -89,12 +97,14 @@ module.exports = (app) => {
 
             const { data } = await  service.GetProductPayload(_id, { productId },'REMOVE_FROM_WISHLIST') 
 
-            PublishCustomerEvent(data);
+           await PublishCustomerEvent(data);
 
-            return res.status(200).json(data.data.product);
+            // return res.status(200).json(data.data.product);
+            ResponseHandler(res, 200, "Successfully product remove to watchlist", data.data.product)            
 
         } catch (err) {
-            next(err)
+            ResponseHandler(res, err.statusCode, err.message, [])
+
         }
     });
 

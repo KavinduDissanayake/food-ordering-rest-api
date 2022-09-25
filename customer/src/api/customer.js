@@ -1,6 +1,7 @@
 const CustomerService = require('../services/customer-service');
 const UserAuth = require('./middlewares/auth');
 const ResponseHandler = require("../utils/reponse-handler");
+const { PublishProductEvent } = require('../utils');
 
 module.exports = (app) => {
 
@@ -49,13 +50,13 @@ module.exports = (app) => {
         } catch (err) {
             ResponseHandler(res, 500, err.name, [])
         }
+
     });
     
 
 
     //----------------------------------------------Edit Profile---------------------------------------------------------------------
     app.put('/edit_profile', UserAuth, async (req, res, next) => {
-
         try {
             const { _id } = req.user;
             const { firstName, lastName, address } = req.body;
@@ -73,7 +74,22 @@ module.exports = (app) => {
         try {
             const { _id } = req.user;
             const { data } = await service.GetWishList(_id);
-            ResponseHandler(res, 200, "Successfully User wishlist !", data);
+             
+            const response = {
+                event:"GET_PRODUCT_LIST",
+                data: data
+            }
+
+
+
+            try{
+             PublishProductEvent(response)
+s
+            }catch(e){
+                console.log(e)
+            }
+
+           ResponseHandler(res, 200, "Successfully User wishlist !", []);
         } catch (err) {
             ResponseHandler(res, 500, err.name, [])
         }

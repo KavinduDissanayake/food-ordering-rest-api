@@ -1,5 +1,5 @@
 const { ProductRepository } = require("../database");
-const { FormateData } = require("../utils");
+const { FormateData,FormateDataProductList } = require("../utils");
 const { APIError } = require('../utils/app-errors');
 
 // All Business logic will be here
@@ -61,6 +61,7 @@ class ProductService {
     async GetSelectedProducts(selectedIds){
         try {
             const products = await this.repository.FindSelectedProducts(selectedIds);
+            console.log(products)
             return FormateData(products);
         } catch (err) {
             throw new APIError('Data Not found')
@@ -90,6 +91,40 @@ class ProductService {
         }
 
 
+    }
+
+
+
+    async GetWishlistProducts(productList){
+      
+
+        try {
+            const products = await this.repository.FindSelectedProducts(productList);
+            console.log(products)
+
+        
+            return FormateDataProductList(products);
+
+
+            
+        } catch (err) {
+            throw err;
+        }
+
+    }
+
+    async SubscribeEvents(payload){
+ 
+        const { event, data } =  payload;
+
+        switch(event){
+            case 'GET_PRODUCT_LIST':
+                this.GetWishlistProducts(data);
+                break;
+            default:
+                break;
+        }
+ 
     }
      
 }
