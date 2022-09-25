@@ -7,6 +7,8 @@ module.exports = async (req,res,next) => {
 
     if(isAuthorized){
         return next();
+    }else{
+        ResponseHandler(res,403,'Access Token Expired ! ',[])
     }
-    ResponseHandler(res,403,'Access Token Expired ! ',[])
+
 }

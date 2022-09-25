@@ -33,6 +33,7 @@ class CustomerRepository {
         }
     }
 
+    
     async FindCustomerById({ id }){
 
         try {
@@ -86,8 +87,8 @@ class CustomerRepository {
 
     async Wishlist(customerId){
         try{
-            const profile = await CustomerModel.findById(customerId)
-            .populate('wishlist');
+            const profile = await CustomerModel.findById(customerId);
+            // .populate('wishlist');
 
             return profile.wishlist;
         }catch(err){
@@ -117,8 +118,6 @@ class CustomerRepository {
     
                  let wishlist = profile.wishlist;
       
-               
-        
                 if(wishlist.length > 0){
                     let isExist = false;
                     wishlist.map(item => {
