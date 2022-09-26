@@ -154,13 +154,6 @@ class CustomerRepository {
 
     async AddCartItem(customerId, item, qty, isRemove){
 
-        
-      
-        // const product = {
-        //     _id, name, desc, price, available, banner 
-        // };
-        
-
         try{
             const { _id }  = item;
 
@@ -212,6 +205,40 @@ class CustomerRepository {
         }
 
     }
+
+
+
+
+    async AddOrderToProfile(customerId, order){
+        try{
+            const profile = await CustomerModel.findById(customerId);
+                                                //.populate('wishlist');
+        
+            console.log(profile);
+
+
+        
+            if(profile){
+    
+                 let orderList = profile.orders;
+
+                orderList.push(order);
+    
+                profile.orders = orderList;
+            }
+    
+            const profileResult = await profile.save();      
+    
+            return profileResult.orders;
+
+
+        }catch(err){
+            console.log(err.message)
+            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Add to WishList')
+        }
+
+    }
+
 
 }
 

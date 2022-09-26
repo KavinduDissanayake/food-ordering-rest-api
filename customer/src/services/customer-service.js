@@ -133,8 +133,9 @@ class CustomerService {
             const orderResult = await this.repository.AddOrderToProfile(customerId, order);
             return FormateData(orderResult);
         } catch (err) {
-            throw err 
+            //throw err 
         }
+
     }
 
 

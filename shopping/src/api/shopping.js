@@ -4,6 +4,7 @@ const UserAuth = require('./middlewares/auth');
 const ResponseHandler = require("../utils/reponse-handler");
 
 module.exports = (app) => {
+
     
     const service = new ShoppingService();
 
@@ -15,13 +16,12 @@ module.exports = (app) => {
 
         try {
             const { data } = await service.PlaceOrder({_id, txnNumber});
-
-
+         
             const payload = await service.GetOrderPayload(_id, data, 'CREATE_ORDER');
 
-            PublishCustomerEvent(payload);
+           PublishCustomerEvent(payload);
 
-            ResponseHandler(res,200,"Shopping order get success !",data)
+            ResponseHandler(res,200,"Shopping order create success !",data)
 
             
         } catch (err) {
@@ -37,7 +37,7 @@ module.exports = (app) => {
         try {
             const { data } = await service.GetOrders(_id);
 
-            ResponseHandler(res,200,"Shopping orders get success !",data)
+            ResponseHandler(res,200,"Shopping orders List success !",data)
 
         } catch (err) {
             ResponseHandler(res,err.statusCode,err.message,[])
