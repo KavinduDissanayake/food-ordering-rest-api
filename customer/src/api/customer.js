@@ -1,7 +1,8 @@
 const CustomerService = require('../services/customer-service');
 const UserAuth = require('./middlewares/auth');
 const ResponseHandler = require("../utils/reponse-handler");
-const { PublishProductEvent } = require('../utils');
+// const { PublishProductEvent } = require('../utils');
+const axios = require('axios');
 
 module.exports = (app) => {
 
@@ -10,8 +11,8 @@ module.exports = (app) => {
 
     //-----------------------------------------------login---------------------------------------------------------------------
     app.post('/login', async (req, res, next) => {
-   
-      //  console.log("Testing");
+
+        //  console.log("Testing");
         try {
             const { email, password } = req.body;
             const { data } = await service.SignIn({ email, password });
@@ -52,7 +53,7 @@ module.exports = (app) => {
         }
 
     });
-    
+
 
 
     //----------------------------------------------Edit Profile---------------------------------------------------------------------
@@ -68,30 +69,39 @@ module.exports = (app) => {
     });
 
 
-    
+
     //----------------------------------------------Wishlist---------------------------------------------------------------------
     app.get('/wishlist', UserAuth, async (req, res, next) => {
         try {
             const { _id } = req.user;
             const { data } = await service.GetWishList(_id);
-             
-            const response = {
-                event:"GET_PRODUCT_LIST",
+
+            const payload = {
+                event: "GET_PRODUCT_LIST",
                 data: data
             }
 
+            //call product micro service  
+                await axios.post('http://localhost:8000/app-events', {
+                    payload
+                })
+                .then(function (response2) {
+                    console.log(response2.data);
+                    ResponseHandler(res, 200, "Successfully User wishlist !", response2.data.data);
+                })
+
+                .catch(function (error) {
+                    console.log(error);
+                    ResponseHandler(res, 500, error.name, []);
+                })
 
 
-            try{
-             PublishProductEvent(response)
-s
-            }catch(e){
-                console.log(e)
-            }
-
-           ResponseHandler(res, 200, "Successfully User wishlist !", []);
         } catch (err) {
             ResponseHandler(res, 500, err.name, [])
         }
+
+
     });
+
+
 }

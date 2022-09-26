@@ -32,14 +32,14 @@ app.use(express.json());
 
   app.use('/shopping',proxy('http://localhost:8003', {
     proxyErrorHandler: function(err, res, next) {
-     ResponseHandler(res, 500, "Customer Service Not Running !", [])
+     ResponseHandler(res, 500, "Shopping Service Not Running !", [])
     }
   }))
 
 
   app.use('/',proxy('http://localhost:8002', {
     proxyErrorHandler: function(err, res, next) {
-     ResponseHandler(res, 500, "Customer Service Not Running !", [])
+     ResponseHandler(res, 500, "Product Service Not Running !", [])
     }
   }))
 

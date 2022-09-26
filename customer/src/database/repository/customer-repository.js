@@ -100,6 +100,7 @@ class CustomerRepository {
 
     async AddWishlistItem(customerId, { _id, name, desc, price, available, banner }){
 
+        
       
         const product = {
             _id, name, desc, price, available, banner 

@@ -54,7 +54,19 @@ module.exports.FormateData = (data) => {
 
 module.exports.PublishProductEvent = async (payload) => {
 
-        await axios.post('http://localhost:8000/app-events', {
+     await axios.post('http://localhost:8000/app-events', {
                 payload
-        })
+        }) 
+        
+        .then(function (response) {
+                console.log(response.data);
+
+                return  (response);
+              })
+              .catch(function (error) {
+                console.log(error);
+                
+
+                return  (error);
+              });
 }

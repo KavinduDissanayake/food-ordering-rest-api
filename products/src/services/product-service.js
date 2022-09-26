@@ -61,7 +61,7 @@ class ProductService {
     async GetSelectedProducts(selectedIds){
         try {
             const products = await this.repository.FindSelectedProducts(selectedIds);
-            console.log(products)
+          //  console.log(products)
             return FormateData(products);
         } catch (err) {
             throw new APIError('Data Not found')
