@@ -1,6 +1,7 @@
 const ShoppingService = require("../services/shopping-service");
 const { PublishCustomerEvent } = require("../utils");
 const UserAuth = require('./middlewares/auth');
+const ResponseHandler = require("../utils/reponse-handler");
 
 module.exports = (app) => {
     
@@ -20,10 +21,11 @@ module.exports = (app) => {
 
             PublishCustomerEvent(payload);
 
-            return res.status(200).json(data);
+            ResponseHandler(res,200,"Shopping order get success !",data)
+
             
         } catch (err) {
-            next(err)
+            ResponseHandler(res,err.statusCode,err.message,[])
         }
 
     });
@@ -35,9 +37,10 @@ module.exports = (app) => {
         try {
             const { data } = await service.GetOrders(_id);
 
-            return res.status(200).json(data);
+            ResponseHandler(res,200,"Shopping orders get success !",data)
+
         } catch (err) {
-            next(err);
+            ResponseHandler(res,err.statusCode,err.message,[])
         }
 
     });
@@ -50,10 +53,10 @@ module.exports = (app) => {
             
             const { data } = await service.getCart({ _id });
     
-            return res.status(200).json(data);
-            
+            ResponseHandler(res,200,"Shopping cart get success !",data)
+
         } catch (err) {
-            throw err;
+            ResponseHandler(res,err.statusCode,err.message,[])
         }
     })
        

@@ -9,8 +9,8 @@ module.exports = (app) => {
         const { payload } = req.body;
 
 
-        await service.SubscribeEvents(payload);
-        
+         service.SubscribeEvents(payload);
+    
         
         console.log("===============  Customer Service Received Event ====== ");
         return res.status(200).json(payload);

@@ -152,6 +152,67 @@ class CustomerRepository {
     }
 
 
+    async AddCartItem(customerId, item, qty, isRemove){
+
+        
+      
+        // const product = {
+        //     _id, name, desc, price, available, banner 
+        // };
+        
+
+        try{
+            const { _id }  = item;
+
+            const profile = await CustomerModel.findById(customerId);
+                                                //.populate('wishlist');
+        
+          //  console.log(profile);
+            if(profile){
+    
+                 let cartlist = profile.cart;
+
+
+                 let isExist = false;
+
+                 if(cartlist.length > 0){
+
+                    cartlist.map(item => {
+
+                         if(item.product._id.toString() === _id.toString()){
+
+                             if(isRemove){
+
+                                cartlist.splice(cartlist.indexOf(item), 1);
+                                
+                                console.log(cartlist);
+
+                            }else{
+                                item.unit = qty;
+                            }
+                            isExist = true;
+                        } 
+                    });
+                
+                 }
+
+                      if(!isExist && !isRemove){
+                        cartlist.push({ product: {...item}, unit: qty});
+                } 
+
+        
+            }
+            const profileResult = await profile.save();      
+    
+            return profileResult.cartlist;
+
+        }catch(err){
+            console.log(err.message)
+            throw APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Add to WishList')
+        }
+
+    }
+
 }
 
 module.exports = CustomerRepository;

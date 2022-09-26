@@ -9,4 +9,4 @@ const AddressSchema = new Schema({
     country: String
 });
 
-module.exports =  mongoose.model('address', AddressSchema);
+// module.exports =  mongoose.model('address', AddressSchema);

@@ -113,16 +113,18 @@ class CustomerService {
            return FormateData(wishlistResult);
     
         } catch (err) {
-            throw new APIError('Data Not found', err)
+            throw err
         }
     }
 
     async ManageCart(customerId, product, qty, isRemove){
         try {
-            const cartResult = await this.repository.AddCartItem(customerId, product, qty, isRemove);        
+            const cartResult = await this.repository.AddCartItem(customerId, product, qty, isRemove);       
+
             return FormateData(cartResult);
         } catch (err) {
-            throw new APIError('Data Not found', err)
+
+          //  throw err
         }
     }
 
@@ -131,7 +133,7 @@ class CustomerService {
             const orderResult = await this.repository.AddOrderToProfile(customerId, order);
             return FormateData(orderResult);
         } catch (err) {
-            throw new APIError('Data Not found', err)
+            throw err 
         }
     }
 
@@ -142,7 +144,7 @@ class CustomerService {
             const wishListItems = await this.repository.Wishlist(customerId);
             return FormateData(wishListItems);
         } catch (err) {
-            throw new APIError('Data Not found', err)
+            throw err
         }
     }
 

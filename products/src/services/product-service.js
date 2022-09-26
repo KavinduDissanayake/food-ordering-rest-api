@@ -96,17 +96,10 @@ class ProductService {
 
 
     async GetWishlistProducts(productList){
-      
-
         try {
             const products = await this.repository.FindSelectedProducts(productList);
-            console.log(products)
-
-        
+            //console.log(products)
             return FormateDataProductList(products);
-
-
-            
         } catch (err) {
             throw err;
         }

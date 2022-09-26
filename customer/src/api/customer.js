@@ -8,7 +8,6 @@ module.exports = (app) => {
 
     const service = new CustomerService();
 
-
     //-----------------------------------------------login---------------------------------------------------------------------
     app.post('/login', async (req, res, next) => {
 
@@ -28,7 +27,6 @@ module.exports = (app) => {
     app.post('/signup', async (req, res, next) => {
 
         try {
-
             const { email, password, firstName, lastName } = req.body;
             const { data } = await service.SignUp({ email, password, firstName, lastName });
             ResponseHandler(res, 200, "Successfully User Created !", data);
@@ -75,6 +73,14 @@ module.exports = (app) => {
         try {
             const { _id } = req.user;
             const { data } = await service.GetWishList(_id);
+            
+
+            //if no  data then we no need to access product service
+            if(data !== null && data !== '') {
+                // do something
+                return  ResponseHandler(res, 200, "Successfully User wishlist !", []);
+             }
+             
 
             const payload = {
                 event: "GET_PRODUCT_LIST",
